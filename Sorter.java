@@ -33,6 +33,8 @@ public class Sorter implements Sort {
     }
 
     public void itemNotFound() {
-        System.out.println("К сожалению, такой товар не найден :(");
+        if (counter == 0) {
+            System.out.println("К сожалению, такой товар не найден :(");
+        }
     }
 }
