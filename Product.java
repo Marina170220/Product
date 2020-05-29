@@ -26,14 +26,6 @@ public class Product {
         this.name = name;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setDate(int date) {
-        this.date = date;
-    }
-
     public String getName() {
         return name;
     }
