@@ -13,10 +13,12 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    static Product[] productList;
+    static List<Product> productList = new ArrayList<>();
     static Scanner scanner;
     static Scanner userScanner;
     static String nameEnteredByUser;
@@ -24,10 +26,18 @@ public class Main {
     static int dateEnteredByUser;
 
     public static void main(String[] args) {
+        Sorter sorter = new Sorter();
+
         {
             try {
                 scanner = new Scanner(new File("src\\Items.txt"));
                 userScanner = new Scanner(System.in);
+
+                while (scanner.hasNext()) {
+                    productList.add(new Product(scanner.nextInt(), scanner.next(), scanner.nextLong(), scanner.next(), scanner.nextDouble(), scanner.nextInt(), scanner.nextInt()));
+                }
+                scanner.close();
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -37,41 +47,29 @@ public class Main {
         nameEnteredByUser = userScanner.next();
         nameEnteredByUser = nameEnteredByUser.trim().toLowerCase();
 
-        Sorter sorter = new Sorter();
-        productList = new Product[8];
         Sorter.counter = 0;
-        for (int i = 0; i < productList.length; i++) {
-            if (scanner.hasNext()) {
-                productList[i] = new Product(scanner.nextInt(), scanner.next(), scanner.nextLong(), scanner.next(), scanner.nextDouble(), scanner.nextInt(), scanner.nextInt());
-                productList[i].setName(productList[i].getName().trim().toLowerCase());
-                sorter.sortByName(productList[i]);
-            }
+        for (int i = 0; i < productList.size(); i++) {
+            productList.get(i).setName(productList.get(i).getName().trim().toLowerCase());
+            sorter.sortByName(productList.get(i));
         }
-        scanner.close();
-        if (Sorter.counter == 0) {
-            sorter.itemNotFound();
-        }
+        sorter.itemNotFound();
 
-        System.out.println("Введите значение цены");
+        System.out.println("\nВведите значение цены");
         priceEnteredByUser = userScanner.nextInt();
 
         Sorter.counter = 0;
-        for (int i = 0; i < productList.length; i++) {
-            sorter.sortByNameAndPrice(productList[i]);
+        for (int i = 0; i < productList.size(); i++) {
+            sorter.sortByNameAndPrice(productList.get(i));
         }
-        if (Sorter.counter == 0) {
-            sorter.itemNotFound();
-        }
+        sorter.itemNotFound();
 
-        System.out.println("Введите срок хранения");
+        System.out.println("\nВведите срок хранения");
         dateEnteredByUser = userScanner.nextInt();
 
         Sorter.counter = 0;
-        for (int i = 0; i < productList.length; i++) {
-            sorter.sortByDate(productList[i]);
+        for (int i = 0; i < productList.size(); i++) {
+            sorter.sortByDate(productList.get(i));
         }
-        if (Sorter.counter == 0) {
-            sorter.itemNotFound();
-        }
+        sorter.itemNotFound();
     }
 }
